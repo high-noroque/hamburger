@@ -3,10 +3,14 @@ import React from 'react'
 import classes from './NavList.css'
 import NavItems from './NavItems/NavItems'
 
-const navList = () => (
+const navList = props => (
   <ul className={classes.NavigationList}>
     <NavItems link="/" exact>Burger Builder</NavItems>
-    <NavItems link="/orders">Orders</NavItems>
+    {props.isAuthenticated ? <NavItems link="/orders">Orders</NavItems> : null}
+    {!props.isAuthenticated
+      ? <NavItems link="/auth">Authenticate</NavItems>
+      : <NavItems link="/logout">Logout</NavItems>
+    }
   </ul>
 )
 
