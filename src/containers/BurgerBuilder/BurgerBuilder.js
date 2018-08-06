@@ -7,8 +7,8 @@ import Modal from '../../components/UI/Modal/Modal'
 import OrderSummary from '../../components/Burger/OrderSummary/OrderSummary'
 import Spinner from '../../components/UI/Spinner/Spinner'
 import withErrorHandle from '../../hoc/withErrorHandle/withErrorHandle'
-import axios from '../../axios-orders'
 import * as actions from '../../store/actions/'
+import axios from '../../axios-orders'
 
 class BurgerBuilder extends Component {
   state = {
@@ -16,7 +16,7 @@ class BurgerBuilder extends Component {
   }
 
   componentDidMount() {
-    console.log(this.props)
+    // console.log(this.props)
     this.props.onInitIngredients()
   }
   //
@@ -72,6 +72,7 @@ class BurgerBuilder extends Component {
     if (this.props.isAuthenticated) {
       this.setState({purchasing: true})
     } else {
+      this.props.onSetAuthRedirectPath('/checkout')
       this.props.history.push('/auth')
     }
   }
@@ -114,10 +115,7 @@ class BurgerBuilder extends Component {
         ingredients={this.props.ing}
         purchaseCanceled={this.purchaseCancelHandler}
         purchaseContinued={this.purchaseContinueHandler}
-        price={this.props.price}/>
-    }
-    if (this.state.loading) {
-      orderSummary = <Spinner/>
+        price={this.props.price} />
     }
 
     return(
@@ -145,7 +143,8 @@ const mapDispatchToProps = dispatch => {
     onIngredientAdded:(ingName) => dispatch(actions.addIngredient(ingName)),
     onIngredientRemoved:(ingName) => dispatch(actions.removeIngredient(ingName)),
     onInitIngredients: () => dispatch(actions.initIngredients()),
-    onInitPurchase: () => dispatch(actions.purchaseInit())
+    onInitPurchase: () => dispatch(actions.purchaseInit()),
+    onSetAuthRedirectPath: (path) => dispatch(actions.setAuthRedirectPath(path))
   }
 }
 
